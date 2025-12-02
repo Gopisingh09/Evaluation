@@ -36,4 +36,16 @@ export class SweetAlertService {
     Swal.fire({ text: msg, confirmButtonColor: 'rgb(3,142,220)' });
   }
 
+  showConfirm(title:string, text:string ,confirmButtonText:string){
+    return Swal.fire({
+      title:title,
+      text:text,
+      icon:'warning',
+      showCancelButton:true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor:'#d33',
+      confirmButtonText:confirmButtonText
+    });
+  }
+
 }

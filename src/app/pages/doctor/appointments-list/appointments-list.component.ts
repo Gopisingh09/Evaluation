@@ -56,18 +56,35 @@ export class AppointmentsListComponent {
   }
 
   onAccept(appointment: AppointmentRequestModel): void {
-    this.appointmentRequestService.accept(appointment).subscribe(() => {
-      this.sweetAlertService.showSuccess('Appointment accepted successfully');
-      this.onSearch();
+    this.sweetAlertService.showConfirm(
+      'Are you sure?',
+      'Do you want to accept this appointment?',
+      'Yes, accept it'
+    ).then((result: any) => {
+      if (result.isConfirmed) {
+        this.appointmentRequestService.accept(appointment).subscribe(() => {
+          this.sweetAlertService.showSuccess('Appointment accepted successfully');
+          this.onSearch();
+        });
+      }
     });
   }
-
+ 
   onReject(appointment: AppointmentRequestModel): void {
-    this.appointmentRequestService.reject(appointment).subscribe(() => {
-      this.sweetAlertService.showSuccess('Appointment rejected successfully');
-      this.onSearch();
+    this.sweetAlertService.showConfirm(
+      'Are you sure?',
+      'Do you want to reject this appointment?',
+      'Yes, reject it'
+    ).then((result: any) => {
+      if (result.isConfirmed) {
+        this.appointmentRequestService.reject(appointment).subscribe(() => {
+          this.sweetAlertService.showSuccess('Appointment rejected successfully');
+          this.onSearch();
+        });
+      }
     });
   }
+ 
 
   openRescheduleModal(appointmentId: number,patientemail:string, doctorId: number) {
     const modalRef = this.modalService.open(RescheduleModalComponent, { size: 'lg', backdrop: 'static' });
