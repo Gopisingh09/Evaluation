@@ -73,7 +73,7 @@ export class AppointmentsListComponent {
   onReject(appointment: AppointmentRequestModel): void {
     this.sweetAlertService.showConfirm(
       'Are you sure?',
-      'Do you want to reject this appointment?',
+      'Do you want really to reject this appointment?',
       'Yes, reject it'
     ).then((result: any) => {
       if (result.isConfirmed) {
