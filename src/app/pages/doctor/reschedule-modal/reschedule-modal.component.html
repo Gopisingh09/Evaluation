@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h5 class="modal-title">Reschedule Appointment</h5>
+  <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <!-- Day Tabs -->
+  <div class="date-tabs mb-3">
+    <button *ngFor="let d of days; let idx = index" (click)="selectDay(idx)" [class.active]="idx === dayIndex"
+      class="btn btn-outline-primary me-2 mb-2">
+      {{ d.label }}
+    </button>
+  </div>
+
+  <ng-container *ngIf="!loadingSlots">
+    <div *ngIf="getSlotsForSelectedDay().length; else noSlots" class="d-flex flex-wrap gap-2">
+      <button *ngFor="let s of getSlotsForSelectedDay()" class="btn btn-sm"
+        [ngClass]="selectedSlot?.slotId === s.slotId ? 'btn-primary' : 'btn-outline-primary'" (click)="selectSlot(s)">
+        {{ s.startTime }} - {{ s.endTime }}
+      </button>
+    </div>
+
+    <ng-template #noSlots>
+      <p class="text-muted text-center">No available slots for this day.</p>
+    </ng-template>
+  </ng-container>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+  <button class="btn btn-primary" [disabled]="!selectedSlot" (click)="confirmReschedule()">Confirm</button>
+</div>

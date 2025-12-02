@@ -1,0 +1,24 @@
+/* Automatically append * to required field labels */
+label.form-label:has(+ input[required]),
+label.form-label:has(+ select[required]),
+label.form-label:has(+ textarea[required]) {
+  position: relative;
+}
+ 
+label.form-label:has(+ input[required])::after,
+label.form-label:has(+ select[required])::after,
+label.form-label:has(+ textarea[required])::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}
+
+label.form-label:has(+ ng-select[required]) {
+  position: relative;
+}
+
+label.form-label:has(+ ng-select[required])::after {
+  content: " *";
+  color: red;
+  font-weight: bold;
+}

@@ -1,0 +1,108 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90vw;
+  max-width: 600px;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  padding: 16px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.modal-close {
+  font-size: 24px;
+  border: none;
+  background: transparent;
+  color: #999;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #e00;
+}
+
+.date-tabs {
+  display: flex;
+  overflow-x: auto;
+  padding: 12px 24px;
+  gap: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.date-tabs button {
+  padding: 6px 14px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.date-tabs button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.slot-wrapper {
+  padding: 20px 24px;
+}
+
+.loading-text,
+.no-slots {
+  font-size: 14px;
+  color: #888;
+}
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+}
+
+.slot-button {
+  padding: 10px;
+  font-size: 14px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.slot-button:hover {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}

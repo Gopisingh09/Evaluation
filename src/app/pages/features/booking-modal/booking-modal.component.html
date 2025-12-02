@@ -1,0 +1,36 @@
+<div class="modal-backdrop" (click)="closeModal()"></div>
+
+<div class="modal-container">
+  <div class="modal-header">
+    <div>
+      <h2 class="modal-title">Book with {{ doctor.name || doctor.FirstName }}</h2>
+      <p class="modal-subtitle">
+        {{doctor.SpecializationName }} 
+      </p>
+    </div>
+    <button class="modal-close" (click)="closeModal()">×</button>
+  </div>
+
+  <!-- Date  -->
+  <div class="date-tabs">
+    <button *ngFor="let d of days; let idx = index" (click)="selectDay(idx)" [class.active]="idx === dayIndex">
+      {{ d.label }}
+    </button>
+  </div>
+
+  <!-- Time  -->
+  <div class="slot-wrapper">
+
+    <ng-container>
+      <div *ngIf="getSlotsForSelectedDay().length; else noSlots" class="slots-grid">
+        <button *ngFor="let s of getSlotsForSelectedDay()" class="slot-button" (click)="handleBook(s)">
+          {{ s.startTime }}
+        </button>
+      </div>
+
+      <ng-template #noSlots>
+        <p class="no-slots">No slots available for this day.</p>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>

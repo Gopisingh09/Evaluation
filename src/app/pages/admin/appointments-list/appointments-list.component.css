@@ -1,0 +1,60 @@
+.card {
+  border-radius: 8px;
+}
+
+.card-header {
+  font-weight: 600;
+}
+
+.table th {
+  font-weight: 500;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.badge {
+  font-size: 0.75rem;
+}
+
+.btn-soft-info {
+  background-color: #e6f4ff;
+  color: #0d6efd;
+}
+
+.btn-soft-info:hover {
+  background-color: #d0eaff;
+}
+
+
+.table-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.table thead th {
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.table td, .table th {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.875rem;
+}
+
+.badge {
+  font-size: 0.85rem;
+  font-weight: 600;
+}

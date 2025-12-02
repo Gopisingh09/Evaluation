@@ -1,0 +1,18 @@
+<div class="doctor-card">
+  <img src="images/default-doctor.png" alt="{{ doctor.FirstName }}" class="doctor-img" />
+
+  <h3>{{ doctor.FirstName +' '+ doctor.LastName}}</h3>
+  <p class="specialization">{{ doctor.SpecializationName }}</p>
+  <p>{{ doctor.YearsOfExperience }} years experience</p>
+
+  <p class="email-line">
+     <i class="fas fa-envelope"></i>
+    <span>{{ doctor.Email }}</span>
+  </p>
+
+  <div class="footer">
+    <span class="fee">₹{{ doctor.ConsultationFee }}</span>
+    <button class="btn-primary" (click)="openBookingPopup(doctor)">Book Now</button>
+
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="login-page d-flex justify-content-center align-items-center vh-100 position-relative">
+
+  <button class="btn btn-light back-btn" routerLink="/" style="z-index: 10;">
+    <i class="bi bi-arrow-left"></i> Back
+  </button>
+
+  <div class="login-card shadow-lg rounded-4 p-4 p-md-5 text-center bg-white" style="max-width: 400px; width: 100%;">
+    <h3 class="fw-bold mb-3 text-primary">Welcome Back!</h3>
+    <form (ngSubmit)="Login(loginForm)" #loginForm="ngForm" autocomplete="off" class="text-start">
+
+      <div class="mb-3">
+        <label for="username" class="form-label fw-semibold">Username</label>
+        <input type="text" id="username" name="username" class="form-control" [(ngModel)]="credentials.username"
+          required placeholder="Enter username" #usernameRef="ngModel" [ngClass]="{ 'is-invalid': usernameRef.invalid && usernameRef.touched,
+            'is-valid': usernameRef.valid && usernameRef.touched
+           }" />
+        <div class="invalid-feedback">Username is required.</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <label for="password" class="form-label fw-semibold">Password</label>
+          <a href="#" class="small text-decoration-none text-primary">Forgot password?</a>
+        </div>
+        <input type="password" id="password" name="password" class="form-control" [(ngModel)]="credentials.password"
+          required placeholder="Enter password" #passwordRef="ngModel" [ngClass]="{ 'is-invalid': passwordRef.invalid && passwordRef.touched,
+            'is-valid': passwordRef.valid && passwordRef.touched
+           }" />
+        <div class="invalid-feedback">Password is required.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 shadow-sm">Sign In</button>
+
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+        {{ errorMessage }}
+      </div>
+
+    </form>
+  </div>
+
+  <ngb-toast *ngIf="showValidationToast" class="bg-danger text-white position-fixed top-0 end-0 m-3" [autohide]="true"
+    [delay]="3000" (hidden)="showValidationToast = false">
+    ⚠️ Please fill in all required fields correctly.
+  </ngb-toast>
+
+</div>

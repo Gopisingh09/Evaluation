@@ -1,0 +1,31 @@
+.container.py-4 {
+  padding: 20px;
+  color: #333;
+}
+
+.card.shadow-sm.rounded-3 {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+table.table thead th {
+  background-color: #cce5ff;
+  padding: 10px 15px;
+  font-weight: 600;
+  border-bottom: 2px solid #007bff;
+}
+
+table.table tbody td {
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
+}
+
+table.table tbody tr:hover {
+  background-color: #f5faff;
+}
+
+.btn-sm {
+  padding: 5px 12px;
+  cursor: pointer;
+}

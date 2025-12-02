@@ -1,0 +1,32 @@
+<header>
+  <div class="container">
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-stethoscope"></i>
+        <span>BookMyDoctor</span>
+      </div>
+
+      <div class="nav-links">
+        <!-- Guest Links -->
+        <a *ngIf="userRole === 'guest'" routerLink="/">Home</a>
+        <a *ngIf="userRole === 'guest'" routerLink="/doctors">Doctors</a>
+        <a *ngIf="userRole === 'guest'" routerLink="/#">About</a>
+        <a *ngIf="userRole === 'guest'" routerLink="/#">Contact</a>
+
+        <!-- Doctor Links -->
+        <a *ngIf="userRole === 'doctor'" routerLink="/doctors/appointments-list">My Appointments</a>
+        <a *ngIf="userRole === 'doctor'" routerLink="/#">Patients</a>
+        <a *ngIf="userRole === 'doctor'" routerLink="/#">Profile</a>
+
+        <!-- Admin Links -->
+        <a *ngIf="userRole === 'admin'" routerLink="/#">Dashboard</a>
+        <a *ngIf="userRole === 'admin'" routerLink="/admin">Doctors</a>
+        <a *ngIf="userRole === 'admin'" routerLink="/admin/appointments-list">Appointments</a>
+      </div>
+
+      <!-- Right Button -->
+      <a *ngIf="!isLoggedIn" routerLink="/login" class="login-btn">Login</a>
+      <button *ngIf="isLoggedIn" class="logout-btn" (click)="logout()">Logout</button>
+    </nav>
+  </div>
+</header>

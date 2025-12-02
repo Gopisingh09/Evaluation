@@ -1,0 +1,122 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+    <h6 class="card-title mb-0">
+      <i class="bi bi-calendar-check me-2"></i> Search
+    </h6>
+  </div>
+
+  <div class="card-body">
+    <form (ngSubmit)="onSearch()">
+      <div class="row g-3 align-items-end">
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">Patient Name</label>
+          <input type="text" class="form-control" [(ngModel)]="model.searchByPatientName" name="patientName"
+            placeholder="Enter Patient Name">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">From Date</label>
+          <input type="date" class="form-control" [(ngModel)]="model.fromDate" name="fromDate"
+            [max]="model.toDate || null">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-semibold">To Date</label>
+          <input type="date" class="form-control" [(ngModel)]="model.toDate" name="toDate"
+            [min]="model.fromDate || null">
+        </div>
+
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-light me-2" (click)="reset()">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-search"></i> Search
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+    <h6 class="mb-0 fw-semibold">My Appointment Requests</h6>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive table-card">
+      <table class="table align-middle table-hover">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>Patient Name</th>
+            <th>Medical Concerns</th>
+            <th>Medical History</th>
+            <th>Appointment Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let appointment of model.appointmentRequestsList; let i = index">
+            <td>{{ appointment.FirstName }} {{ appointment.LastName }}</td>
+            <td>{{ appointment.MedicalConcerns }}</td>
+            <td>{{ appointment.MedicalHistory || '—' }}</td>
+            <td>{{ appointment.AppointmentDate | date: 'dd-MM-yyyy' }}</td>
+            <td>{{ appointment.AppointmentStartTime }}</td>
+            <td>{{ appointment.AppointmentEndTime }}</td>
+
+            <td class="text-center">
+              <ng-container *ngIf="appointment.RequestStatusName === 'Pending'">
+                <button class="btn btn-success btn-sm me-1" (click)="onAccept(appointment)">
+                  <i class="bi bi-check-circle"></i> Accept
+                </button>
+
+                <button class="btn btn-danger btn-sm me-1" (click)="onReject(appointment)">
+                  <i class="bi bi-x-circle"></i> Reject
+                </button>
+
+                <button class="btn btn-warning btn-sm"
+                  (click)="openRescheduleModal(appointment.RequestId, appointment.Email, appointment.DoctorId)">
+                  Reschedule
+                </button>
+
+              </ng-container>
+
+              <ng-container *ngIf="appointment.RequestStatusName !== 'Pending'">
+                <span class="badge px-3 py-1" [ngClass]="{
+                  'bg-success': appointment.RequestStatusName === 'Accepted',
+                  'bg-danger': appointment.RequestStatusName === 'Rejected',
+                  'bg-info text-dark': appointment.RequestStatusName === 'Rescheduled'
+                  }">
+                  {{ appointment.RequestStatusName }}
+                </span>
+              </ng-container>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="!model.appointmentRequestsList || model.appointmentRequestsList.length === 0">
+            <td colspan="8" class="text-center text-muted py-3">
+              No appointments found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row justify-content-between align-items-center mt-3">
+      <div class="col-sm-6 text-end">
+        <ngb-pagination [collectionSize]="model.totalRecords" [(page)]="model.pageNumber" [pageSize]="model.pageSize"
+          [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="onSearch()">
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>

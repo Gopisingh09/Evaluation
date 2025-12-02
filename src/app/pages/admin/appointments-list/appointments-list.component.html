@@ -1,0 +1,132 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between">
+    <h6 class="card-title mb-0">
+      <i class="bi bi-funnel me-2"></i> Appointment Search Filters
+    </h6>
+  </div>
+
+  <div class="card-body">
+    <form (ngSubmit)="onSearch()" #searchForm="ngForm">
+
+      <div class="row g-3 align-items-end">
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Patient Name</label>
+          <input type="text" class="form-control" [(ngModel)]="model.searchByPatientName" name="patientName"
+            placeholder="Enter Patient Name">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Doctor Name</label>
+          <input type="text" class="form-control" [(ngModel)]="model.searchByDoctorName" name="doctorName"
+            placeholder="Enter Doctor Name">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Specialization</label>
+          <ng-select [items]="specializationList" bindLabel="SpecializationName" bindValue="SpecializationId"
+            [(ngModel)]="model.specializationId" name="specializationIds" [multiple]="false"
+            placeholder="Select Specializations" [closeOnSelect]="true">
+          </ng-select>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">From Date</label>
+          <input type="date" class="form-control" [(ngModel)]="model.fromDate" name="fromDate"
+            [max]="model.toDate || null">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">To Date</label>
+          <input type="date" class="form-control" [(ngModel)]="model.toDate" name="toDate"
+            [min]="model.fromDate || null">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Page Size</label>
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-outline-secondary px-2" (click)="decrementPageSize()">–</button>
+            <input type="number" class="form-control text-center mx-2" [(ngModel)]="model.pageSize" name="pageSize"
+              min="1" max="50" readonly>
+            <button type="button" class="btn btn-outline-secondary px-2" (click)="incrementPageSize()">+</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-light me-2" (click)="reset()">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="!isDateValid()">
+            <i class="bi bi-search"></i> Search
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!isDateValid()" class="text-danger mt-2">
+        From Date cannot be greater than To Date.
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+    <h6 class="mb-0 fw-semibold">Appointment Requests</h6>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive table-card">
+      <table class="table align-middle table-hover">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>Request ID</th>
+            <th>Patient Name</th>
+            <th>Doctor Name</th>
+            <th>Specialization</th>
+            <th>Appointment Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let appointment of model.appointmentRequestsList; let i = index">
+            <td>{{ appointment.RequestId }}</td>
+            <td>{{ appointment.FirstName }} {{ appointment.LastName }}</td>
+            <td>{{ appointment.DoctorName }}</td>
+            <td>{{ appointment.SpecializationName }}</td>
+            <td>{{ appointment.AppointmentDate | date: 'dd-MM-yyyy' }}</td>
+            <td>{{ appointment.AppointmentStartTime }}</td>
+            <td>{{ appointment.AppointmentEndTime }}</td>
+            <td>
+              <span class="badge px-3 py-1" [ngClass]="{
+                      'bg-warning': appointment.RequestStatusName === 'Pending',
+                      'bg-success': appointment.RequestStatusName === 'Accepted',
+                      'bg-danger': appointment.RequestStatusName === 'Rejected',
+                      'bg-info': appointment.RequestStatusName === 'Rescheduled'
+                }">
+                {{ appointment.RequestStatusName }}
+              </span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row mt-3">
+      <div class="d-flex justify-content-end mt-3">
+        <ngb-pagination [collectionSize]="model.totalRecords" [(page)]="model.pageNumber" [pageSize]="model.pageSize"
+          [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="onSearch()">
+        </ngb-pagination>
+      </div>
+
+    </div>
+
+  </div>
+</div>

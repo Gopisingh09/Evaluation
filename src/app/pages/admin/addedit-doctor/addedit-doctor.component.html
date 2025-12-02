@@ -1,0 +1,206 @@
+<div class="container mt-4">
+  <h3 class="text-primary fw-bold mb-4">
+    <i class="bi bi-person-plus-fill me-2"></i>
+    {{ isEditMode ? 'EDIT DOCTOR' : 'ADD DOCTOR' }}
+  </h3>
+
+
+  <form (ngSubmit)="submit(doctorForm)" #doctorForm="ngForm" novalidate class="card p-4 shadow-sm border-0">
+    <div class="row g-3">
+
+      <!-- First Name -->
+      <div class="col-md-6">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-control" name="FirstName" [(ngModel)]="model.FirstName"
+          placeholder="Enter first name" required maxlength="100" pattern="^[A-Za-z\s'-]+$" #FirstName="ngModel"
+          [ngClass]="{ 'is-invalid': FirstName.invalid && (FirstName.touched || doctorForm.submitted) }" />
+        <div class="invalid-feedback" *ngIf="FirstName.errors?.['required']">First name is required.</div>
+        <div class="invalid-feedback" *ngIf="FirstName.errors?.['maxlength']">Maximum 100 characters allowed.</div>
+        <div class="invalid-feedback" *ngIf="FirstName.errors?.['pattern']">Enter a valid name (letters only).</div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="col-md-6">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-control" name="LastName" [(ngModel)]="model.LastName"
+          placeholder="Enter last name" required maxlength="100" pattern="^[A-Za-z\s'-]+$" #LastName="ngModel"
+          [ngClass]="{ 'is-invalid': LastName.invalid && (LastName.touched || doctorForm.submitted) }" />
+
+        <div class="invalid-feedback" *ngIf="LastName.errors?.['required']">Last name is required.</div>
+        <div class="invalid-feedback" *ngIf="LastName.errors?.['maxlength']">Maximum 100 characters allowed.</div>
+        <div class="invalid-feedback" *ngIf="LastName.errors?.['pattern']">Enter a valid name (letters only).</div>
+      </div>
+
+      <!-- Email -->
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" name="Email" [(ngModel)]="model.Email"
+          placeholder="e.g. doctor@example.com" required maxlength="255"
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" #Email="ngModel"
+          [ngClass]="{ 'is-invalid': Email.invalid && (Email.touched || doctorForm.submitted) }" />
+        <div class="invalid-feedback" *ngIf="Email.errors?.['required']">Email is required.</div>
+        <div class="invalid-feedback" *ngIf="Email.errors?.['pattern']">Enter a valid email address (e.g.,
+          user&#64;example.com).</div>
+        <div class="invalid-feedback" *ngIf="Email.errors?.['maxlength']">Maximum 255 characters allowed.</div>
+      </div>
+
+      <!-- Gender -->
+      <div class="col-md-3">
+        <label class="form-label">Gender</label>
+        <ng-select name="GenderId" [items]="GenderList" bindLabel="GenderName" bindValue="GenderId"
+          [(ngModel)]="model.GenderId" required placeholder="Select gender" #GenderId="ngModel"
+          [ngClass]="{ 'is-invalid': GenderId.invalid && (GenderId.touched || doctorForm.submitted) }">
+        </ng-select>
+        <div class="invalid-feedback " *ngIf="GenderId.invalid && (GenderId.touched || doctorForm.submitted)">
+          Gender is required.
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="col-md-3">
+        <label class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" name="DOB" [(ngModel)]="model.DOB" placeholder="Select date of birth"
+          required #DOB="ngModel"
+          [ngClass]="{ 'is-invalid': (DOB.invalid && (DOB.touched || doctorForm.submitted)) || ageError }"
+          (change)="validateAgeBasedOnQualification()" />
+        <div class="invalid-feedback" *ngIf="DOB.invalid && (DOB.touched || doctorForm.submitted)">
+          Date of birth is required.
+        </div>
+        <div class="text-danger small" *ngIf="ageError">{{ ageError }}</div>
+      </div>
+
+      <!-- Qualification -->
+      <div class="col-md-6">
+        <label class="form-label">Qualification</label>
+        <ng-select name="QualificationId" [items]="QualificationList" bindLabel="QualificationName"
+          bindValue="QualificationId" [(ngModel)]="model.QualificationId" required placeholder="Select qualification"
+          #QualificationId="ngModel"
+          [ngClass]="{ 'is-invalid': QualificationId.invalid && (QualificationId.touched || doctorForm.submitted) }"
+          (change)="validateAgeBasedOnQualification()">
+        </ng-select>
+        <div class="invalid-feedback "
+          *ngIf="QualificationId.invalid && (QualificationId.touched || doctorForm.submitted)">
+          Qualification is required.
+        </div>
+      </div>
+
+      <!-- Consultation Fee -->
+      <div class="col-md-3">
+        <label class="form-label">Consultation Fee</label>
+        <input type="number" class="form-control" name="ConsultationFee" [(ngModel)]="model.ConsultationFee"
+          placeholder="e.g. 500" required min="100" max="1000" #ConsultationFee="ngModel"
+          [ngClass]="{ 'is-invalid': ConsultationFee.invalid && (ConsultationFee.touched || doctorForm.submitted) }" />
+        <div class="invalid-feedback" *ngIf="ConsultationFee.errors?.['required']">Consultation fee is required.</div>
+        <div class="invalid-feedback" *ngIf="ConsultationFee.errors?.['min']">Minimum fee should be ₹100.</div>
+        <div class="invalid-feedback" *ngIf="ConsultationFee.errors?.['max']">Fee should not exceed ₹1000.</div>
+      </div>
+
+      <!-- Experience -->
+      <div class="col-md-3">
+        <label class="form-label">Years of Experience</label>
+        <input type="number" class="form-control" name="YearsOfExperience" [(ngModel)]="model.YearsOfExperience"
+          placeholder="e.g. 10" required min="0" max="50" #YearsOfExperience="ngModel"
+          [ngClass]="{ 'is-invalid': YearsOfExperience.invalid && (YearsOfExperience.touched || doctorForm.submitted) }"
+          (change)="validateAgeBasedOnQualification()" />
+        <div class="invalid-feedback" *ngIf="YearsOfExperience.errors?.['required']">Experience is required.</div>
+        <div class="invalid-feedback" *ngIf="YearsOfExperience.errors?.['min']">Experience cannot be negative.</div>
+        <div class="invalid-feedback" *ngIf="YearsOfExperience.errors?.['max']">Max 50 years allowed.</div>
+        <div *ngIf="experienceError" class="text-danger small">{{ experienceError }}</div>
+      </div>
+
+      <!-- Specialization -->
+      <div class="col-md-6">
+        <label class="form-label">Specialization</label>
+        <ng-select name="SpecializationId" [items]="SpecializationList" bindLabel="SpecializationName"
+          bindValue="SpecializationId" [(ngModel)]="model.SpecializationId" required placeholder="Select specialization"
+          #SpecializationId="ngModel"
+          [ngClass]="{ 'is-invalid': SpecializationId.invalid && (SpecializationId.touched || doctorForm.submitted) }">
+        </ng-select>
+        <div class="invalid-feedback"
+          *ngIf="SpecializationId.invalid && (SpecializationId.touched || doctorForm.submitted)">
+          Specialization is required.
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="col-md-6">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" name="Username" [(ngModel)]="model.Username"
+          placeholder="Choose a username" required minlength="4" maxlength="50" pattern="^[A-Za-z0-9_]+$"
+          #Username="ngModel"
+          [ngClass]="{ 'is-invalid': Username.invalid && (Username.touched || doctorForm.submitted) }" />
+        <div class="invalid-feedback" *ngIf="Username.errors?.['required']">Username is required.</div>
+        <div class="invalid-feedback" *ngIf="Username.errors?.['minlength']">Minimum 4 characters required.</div>
+        <div class="invalid-feedback" *ngIf="Username.errors?.['maxlength']">Maximum 50 characters allowed.</div>
+        <div class="invalid-feedback" *ngIf="Username.errors?.['pattern']">Only letters, numbers, and underscores
+          allowed.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="col-md-6">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" name="Password" [(ngModel)]="model.Password"
+          placeholder="Enter password" required minlength="8" maxlength="50" #Password="ngModel" [disabled]="isEditMode"
+          [ngClass]="{ 'is-invalid': Password.invalid && (Password.touched || doctorForm.submitted) }" />
+        <div class="invalid-feedback" *ngIf="Password.errors?.['required']">Password is required.</div>
+        <div class="invalid-feedback" *ngIf="Password.errors?.['minlength']">Minimum 8 characters required.</div>
+        <div class="invalid-feedback" *ngIf="Password.errors?.['maxlength']">Maximum 50 characters allowed.</div>
+      </div>
+
+      <!-- Bio -->
+      <div class="col-12">
+        <label class="form-label">Profile Description</label>
+        <textarea class="form-control" name="Bio" [(ngModel)]="model.Bio" rows="2"
+          placeholder="Write a short bio (optional, max 1000 chars)" maxlength="1000">
+      </textarea>
+      </div>
+
+    </div>
+
+    <!-- Slots Section -->
+    <hr class="my-4" />
+    <h5 class="text-primary fw-bold">Doctor Slot Schedule</h5>
+
+    <!-- Slot Duration -->
+    <div class="col-md-3">
+      <label class="form-label">Duration (Minutes)</label>
+      <input type="number" class="form-control" [(ngModel)]="slotModel.SlotDuration" name="DurationMinutes"
+        placeholder="e.g. 30" required min="5" max="45" #durationCtrl="ngModel"
+        [ngClass]="{ 'is-invalid': durationCtrl.invalid && (durationCtrl.touched || doctorForm.submitted) }"
+        (change)="onSlotDurationChange()" />
+      <div class="invalid-feedback" *ngIf="durationCtrl.errors?.['required']">Slot duration is required.</div>
+      <div class="invalid-feedback" *ngIf="durationCtrl.errors?.['min']">Minimum 5 minutes required.</div>
+      <div class="invalid-feedback" *ngIf="durationCtrl.errors?.['max']">Maximun 45 minutes allowed.</div>
+    </div>
+
+    <!-- Slots Section-->
+    <div *ngIf="slotModel.SlotDuration" class="mt-4">
+      <h5>Days & Time Ranges</h5>
+
+      <div *ngFor="let day of weekDays" class="card mb-2 p-2" [ngClass]="{'border-danger': slotErrors[day]}">
+        <h6>{{ day }}</h6>
+
+        <div *ngFor="let time of dayTimes[day]; let i = index" class="d-flex gap-2 align-items-center mb-1">
+          <input type="time" [(ngModel)]="time.startTime" name="{{day}}_start_{{i}}" class="form-control w-25"
+            (change)="validateDaySlots(day)" />
+          <span>to</span>
+          <input type="time" [(ngModel)]="time.endTime" name="{{day}}_end_{{i}}" class="form-control w-25"
+            (change)="validateDaySlots(day)" />
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeTimeRange(day, i)">X</button>
+        </div>
+
+        <button type="button" class="btn btn-outline-primary btn-sm" (click)="addTimeRange(day)">+ Add Time
+          Range</button>
+
+        <div *ngIf="slotErrors[day]" class="text-danger small mt-2">⚠️ {{ slotErrors[day] }}</div>
+      </div>
+    </div>
+
+    <div class="text-end mt-3">
+      <button type="button" class="btn btn-secondary me-2" routerLink="/admin">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save Doctor</button>
+    </div>
+  </form>
+
+</div>

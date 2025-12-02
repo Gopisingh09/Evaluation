@@ -1,0 +1,67 @@
+<div class="container py-4">
+  <h3 class="mb-4">DOCTORS LIST</h3>
+
+  <!-- Doctors Table -->
+  <div class="card shadow-sm rounded-3">
+    <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center"
+      style="background: linear-gradient(to right, #007bff, #6610f2);">
+      <h5 class="mb-0" style="color: black;">
+        <i class="bi bi-person-fill" style="color: black;"></i>
+        <!-- SEARCH RESULTS -->
+      </h5>
+      <div>
+        <button class="btn btn-sm btn-primary" [routerLink]="['/admin/addDoctor']">
+          <i class="bi bi-plus-circle"></i> Add New Doctor
+        </button>
+      </div>
+    </div>
+
+    <div id="exportTable" class="table-responsive">
+      <table class="table table-hover table-striped align-middle mb-0">
+        <thead class="table-primary">
+          <tr>
+            <th>Doctor ID</th>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Qualification</th>
+            <th>Gender</th>
+            <th>Years of Experience</th>
+            <th>Consultation Fee</th>
+            <th>Created On</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doctor of model.doctorsList; let i = index;">
+            <td class="fw-semibold text-dark">{{ doctor.DoctorId }}</td>
+            <td>{{ doctor.FirstName }} {{doctor.LastName}}</td>
+            <td>{{ doctor.SpecializationName }}</td>
+            <td>{{ doctor.QualificationName }}</td>
+            <td>{{ doctor.GenderName }}</td>
+            <td>{{ doctor.YearsOfExperience }}</td>
+            <td>{{ doctor.ConsultationFee | currency:'INR' }}</td>
+            <td>{{ doctor.CreatedOn | date:'short' }}</td>
+            <td>
+              <button class="btn btn-primary btn-sm" [routerLink]="['/admin/editDoctor', doctor.DoctorId]">
+                Edit
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="model.doctorsList.length === 0" class="p-4 text-center text-muted">
+      <i class="bi bi-emoji-frown fs-3"></i><br />
+      No doctors found.
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between p-3">
+      <ngb-pagination [collectionSize]="model.totalRecords" [(page)]="model.pageNumber" [pageSize]="model.pageSize"
+        [maxSize]="3" [rotate]="true" (pageChange)="onSearch()">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>

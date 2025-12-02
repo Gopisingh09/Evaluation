@@ -1,0 +1,39 @@
+<section class="doctors-page container py-5">
+  <div class="filter-container text-center mb-5 p-4 shadow-sm rounded-4 bg-white mx-auto" style="max-width: 700px;">
+    <h3 class="mb-4 fw-semibold">Find Doctors</h3>
+
+    <div class="row justify-content-center align-items-center g-3">
+
+      <div class="col-md-4 col-12">
+        <ng-select name="specializations" [items]="SpecializationList" bindLabel="SpecializationName"
+          bindValue="SpecializationId" [(ngModel)]="doctors.SpecializationId" (ngModelChange)="loadDoctors()"
+          placeholder="Select specialization" [clearable]="true" class="form-select-custom">
+        </ng-select>
+      </div>
+
+      <div class="col-md-3 col-12">
+        <ng-select name="gender" [items]="GenderList" bindLabel="GenderName" bindValue="GenderId"
+          [(ngModel)]="doctors.GenderId" (ngModelChange)="loadDoctors()" placeholder="Select gender" [clearable]="true"
+          class="form-select-custom">
+        </ng-select>
+      </div>
+
+      <div class="col-md-3 col-12">
+        <input type="number" class="form-control form-select-custom" name="experience" placeholder="Years of exp"
+          min="0" max="50" [(ngModel)]="doctors.YearsOfExperience" (change)="loadDoctors()">
+      </div>
+    </div>
+  </div>
+
+  <div class="doctor-grid">
+    <div *ngFor="let doc of doctors.doctorsList">
+      <app-doctor-card [doctor]="doc"></app-doctor-card>
+    </div>
+  </div>
+
+  <div class="pagination-container d-flex justify-content-center mt-5">
+    <ngb-pagination [collectionSize]="doctors.totalRecords" [(page)]="doctors.pageNumber" [pageSize]="doctors.pageSize"
+      [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadDoctors()">
+    </ngb-pagination>
+  </div>
+</section>
